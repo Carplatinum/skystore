@@ -3,11 +3,11 @@
     "model": "catalog.product",
     "pk": 35,
     "fields": {
-        "name": "Смартфон",
-        "description": "Современный смартфон с большим экраном",
-        "image": "",
+        "name": "Nokia 3310",
+        "description": "Классический сотовый телефон начала нулевых",
+        "image": "products/nokia3310.png",
         "category": 24,
-        "price": "29999.99",
+        "price": "2999.99",
         "created_at": "2025-07-05T17:07:07.535Z",
         "updated_at": "2025-07-05T17:07:07.535Z"
     }
@@ -30,8 +30,8 @@
     "pk": 37,
     "fields": {
         "name": "Футболка",
-        "description": "Хлопковая футболка с принтом",
-        "image": "",
+        "description": "Хлопковая футболка с принтом Python",
+        "image": "products/питон.jpg",
         "category": 25,
         "price": "799.50",
         "created_at": "2025-07-05T17:07:07.537Z",
@@ -55,9 +55,9 @@
     "model": "catalog.product",
     "pk": 39,
     "fields": {
-        "name": "Роман",
+        "name": "Джейн Эйр",
         "description": "Увлекательный художественный роман",
-        "image": "",
+        "image": "products/джейн эйр.jpg",
         "category": 26,
         "price": "450.00",
         "created_at": "2025-07-05T17:07:07.538Z",
