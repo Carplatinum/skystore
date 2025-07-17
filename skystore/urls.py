@@ -6,9 +6,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('catalog.urls')),  # подключаем urls приложения catalog
+    path('', include('catalog.urls')),
+    path('blogs/', include('blog.urls', namespace='blog')),  # подключение приложения блога
 ]
 
-# Добавляем обработку медиафайлов только в режиме отладки
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
