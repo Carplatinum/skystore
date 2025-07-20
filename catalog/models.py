@@ -17,8 +17,14 @@ class Product(models.Model):
     name = models.CharField('Наименование', max_length=255)
     description = models.TextField('Описание', blank=True)
     image = models.ImageField('Изображение', upload_to='products/', blank=True, null=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products', verbose_name='Категория')
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        related_name='products',
+        verbose_name='Категория'
+    )
     price = models.DecimalField('Цена за покупку', max_digits=10, decimal_places=2)
+    available = models.BooleanField('В наличии', default=True)  # Для возможности контроля из наличия
     created_at = models.DateTimeField('Дата создания', auto_now_add=True)
     updated_at = models.DateTimeField('Дата последнего изменения', auto_now=True)
 

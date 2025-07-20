@@ -1,0 +1,24 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+  <h2>Список продуктов</h2>
+  <a href="{% url 'product_create' %}" class="btn btn-success mb-3">Добавить продукт</a>
+  <table class="table">
+    <tr>
+      <th>Название</th>
+      <th>Цена</th>
+      <th>В наличии</th>
+      <th>Действия</th>
+    </tr>
+    {% for product in object_list %}
+      <tr>
+        <td><a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a></td>
+        <td>{{ product.price }}</td>
+        <td>{% if product.available %}✔{% else %}✖{% endif %}</td>
+        <td>
+          <a href="{% url 'product_update' product.pk %}" class="btn btn-sm btn-warning">Изменить</a>
+          <a href="{% url 'product_delete' product.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
