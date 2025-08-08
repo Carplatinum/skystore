@@ -1,4 +1,4 @@
-{% load static %}
+{% load static %} {# Убедитесь, что это есть в начале файла #}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 </head>
 <body>
-  {# Подключаем главное меню #}
+  {# Подключаем главное меню, которое теперь содержит логику аутентификации #}
   {% include 'catalog/menu.html' %}
 
   <main class="container py-4">
