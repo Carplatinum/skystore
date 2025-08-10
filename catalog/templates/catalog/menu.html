@@ -7,7 +7,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto">  {# me-auto чтобы "меню" выровнялось влево #}
+      <ul class="navbar-nav me-auto">  {# me-auto чтобы меню выровнялось влево #}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'catalog:home' %}">Главная</a>
         </li>
@@ -20,7 +20,12 @@
         {% if user.is_authenticated %}
           <li class="nav-item nav-link disabled">Привет, {{ user.email }}</li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:logout' %}">Выйти</a>
+            <form method="post" action="{% url 'users:logout' %}" style="display: inline;">
+              {% csrf_token %}
+              <button type="submit" class="nav-link btn btn-link" style="display: inline; padding: 0; border: none; background: none;">
+                Выйти
+              </button>
+            </form>
           </li>
         {% else %}
           <li class="nav-item">
