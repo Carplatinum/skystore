@@ -1,5 +1,8 @@
 from django.core.management.base import BaseCommand
 from catalog.models import Category, Product
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class Command(BaseCommand):
     help = 'Удаляет все данные и загружает тестовые категории и продукты'
@@ -26,6 +29,12 @@ class Command(BaseCommand):
             category_objs.append(category_obj)
             self.stdout.write(f'Создана категория: {category_obj.name}')
 
+        # Получаем пользователя для владельца продуктов
+        owner = User.objects.first()
+        if not owner:
+            self.stdout.write(self.style.ERROR('Нет пользователей для задания владельца продукта. Пожалуйста, создайте пользователя.'))
+            return
+
         self.stdout.write('Создаём продукты...')
         products = [
             {'name': 'Смартфон', 'description': 'Современный смартфон с большим экраном', 'category': category_objs[0], 'price': 29999.99},
@@ -38,8 +47,12 @@ class Command(BaseCommand):
             {'name': 'Футбольный мяч', 'description': 'Качественный мяч для игры на улице', 'category': category_objs[4], 'price': 1500.00},
         ]
 
-        for prod in products:
-            product_obj = Product.objects.create(**prod)
-            self.stdout.write(f'Создан продукт: {product_obj.name} (Категория: {product_obj.category.name})')
+        for prod_data in products:
+            product_obj = Product.objects.create(
+                owner=owner,
+                status='draft',  # статус по умолчанию
+                **prod_data
+            )
+            self.stdout.write(f'Создан продукт: {product_obj.name} (Категория: {product_obj.category.name}, Владелец: {product_obj.owner.email})')
 
         self.stdout.write(self.style.SUCCESS('Тестовые данные успешно загружены!'))
