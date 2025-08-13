@@ -5,8 +5,13 @@ from django.views.generic import (
     CreateView, UpdateView, DeleteView
 )
 from django.http import Http404
-from .models import Product
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+
+from .models import Product, Category
 from .forms import ProductForm
+from .services import get_products_by_category_cached  # Импорт сервисной функции
+
 
 class HomeView(ListView):
     model = Product
@@ -18,6 +23,7 @@ class ContactsView(TemplateView):
     template_name = 'catalog/contacts.html'
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')  # Кешируем страницу детального просмотра продукта на 15 минут
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'catalog/product_detail.html'
@@ -67,3 +73,19 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         if product.owner == user or user.groups.filter(name='Модератор продуктов').exists():
             return product
         raise Http404('У вас нет прав на удаление этого продукта')
+
+
+class ProductsByCategoryView(ListView):
+    model = Product
+    template_name = 'catalog/products_by_category.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        category_id = self.kwargs.get('category_id')
+        return get_products_by_category_cached(category_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_id = self.kwargs.get('category_id')
+        context['category'] = Category.objects.get(pk=category_id)
+        return context
