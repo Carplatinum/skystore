@@ -1,0 +1,31 @@
+{% extends "catalog/base.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }} - SkyStore{% endblock %}
+
+{% block content %}
+  <h1>{{ product.name }}</h1>
+
+  {% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 300px;">
+  {% else %}
+    <p>Изображение отсутствует</p>
+  {% endif %}
+
+  <p><strong>Описание:</strong> {{ product.description }}</p>
+  <p><strong>Категория:</strong> {{ product.category.name }}</p>
+  <p><strong>Цена:</strong> {{ product.price }} ₽</p>
+  <p><strong>Статус публикации:</strong> {{ product.get_status_display }}</p>
+  <p><strong>Владелец:</strong> {{ product.owner.email }}</p>
+
+  <a href="{% url 'catalog:home' %}">← Назад на главную</a>
+
+  {% if user.is_authenticated %}
+    {% if user == product.owner or user.groups.filter(name='Модератор продуктов').exists %}
+      <div style="margin-top: 20px;">
+        <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-primary">Редактировать</a>
+        <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">Удалить</a>
+      </div>
+    {% endif %}
+  {% endif %}
+{% endblock %}
